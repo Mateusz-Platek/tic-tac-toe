@@ -2,6 +2,7 @@ let cells = document.querySelectorAll('.cell');
 let background = document.querySelector('.winner');
 let message = document.querySelector('.winner > div');
 let resetButton = document.querySelector('button');
+let player = document.querySelector('.player');
 
 let turn = 'X';
 let board = [false, false, false, false, false, false, false, false, false];
@@ -15,6 +16,16 @@ let winner = [
     [0, 4, 8],
     [2, 4, 6]
 ];
+
+let reset = function() {
+    turn = 'X';
+    cells.forEach(cell => {
+        cell.textContent = '';
+        cell.addEventListener('click', () => eventHandler(cell, turn), {once: true});
+    });
+    background.classList.remove('show');
+    board = [false, false, false, false, false, false, false, false, false];
+}
 
 let changeValue = function() {
     if(turn == 'X') {
@@ -59,14 +70,6 @@ let placeMark = function(box, val) {
 let eventHandler = function(cell, turn) {
     placeMark(cell, turn);
     checkDraw();
-}
-
-let reset = function() {
-    background.classList.remove('show');
-    board = [false, false, false, false, false, false, false, false, false];
-    cells.forEach(cell => {
-        cell.textContent = '';
-    })
 }
 
 cells.forEach(cell => {
