@@ -11,6 +11,10 @@ body {
     align-items: center;
 }
 
+h1 {
+    font-size: 48px;
+}
+
 .gameboard {
     margin: 48px 0;
     display: grid;
@@ -21,19 +25,11 @@ body {
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
 }
 
-.white {
+.gameboard > div {
     background-color: white;
     font-size: 48px;
     font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-button {
-    background-color: white;
-    border: 2px solid black;
-    border-radius: 36px;
-    font-size: 24px;
-    padding: 12px 28px;
 }

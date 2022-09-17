@@ -1,32 +1,23 @@
-let gameboard = document.querySelector('.gameboard');
-let resetButton = document.querySelector('button');
+let cells = document.querySelectorAll('.cell');
 
-let game = function() {
-    let board = ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'];
-    let print = function() {
-        for(let i = 0; i < board.length; i++) {
-            let box = document.createElement('div');
-            box.classList.add('white');
-            box.setAttribute('data', `${i}`);
-            box.textContent = board[i];
-            gameboard.appendChild(box);
-        }
-    }
-    let reset = function() {
-        board = ['', '', '', '', '', '', '', '', ''];
-        gameboard.textContent = '';
-        print();
-    }
+let turn = 'X';
+let board = [false, false, false, false, false, false, false, false, false];
 
-    return {
-        print,
-        reset
-    };
+let changeValue = function() {
+    if(turn == 'X') {
+        turn = 'O';
+    } else {
+        turn = 'X';
+    }
 }
 
-let board = game();
-board.print();
+let eventHandler = function(box, val) {
+    box.textContent = val;
+    let i = box.getAttribute('data');
+    board[i] = val;
+    changeValue(val);
+}
 
-resetButton.addEventListener('click', () => {
-    board.reset();
+cells.forEach(cell => {
+    cell.addEventListener('click', () => eventHandler(cell, turn), {once: true});
 });
