@@ -16,12 +16,17 @@ let winner = [
     [0, 4, 8],
     [2, 4, 6]
 ];
+let listener = [];
+
+player.textContent = turn + ' turn';
 
 let reset = function() {
     turn = 'X';
+    player.textContent = turn + ' turn';
     cells.forEach(cell => {
+        cell.removeEventListener('click', listener[cell.getAttribute('data')]);
         cell.textContent = '';
-        cell.addEventListener('click', () => eventHandler(cell, turn), {once: true});
+        cell.addEventListener('click', listener[cell.getAttribute('data')], {once: true})
     });
     background.classList.remove('show');
     board = [false, false, false, false, false, false, false, false, false];
@@ -33,6 +38,7 @@ let changeValue = function() {
     } else {
         turn = 'X';
     }
+    player.textContent = turn + ' turn';
 }
 
 let checkDraw = function(){
@@ -64,7 +70,7 @@ let placeMark = function(box, val) {
         background.classList.add('show');
         message.textContent = val + ' wins'
     }
-    changeValue(val);
+    changeValue();
 }
 
 let eventHandler = function(cell, turn) {
@@ -73,9 +79,10 @@ let eventHandler = function(cell, turn) {
 }
 
 cells.forEach(cell => {
-    cell.addEventListener('click', () => eventHandler(cell, turn), {once: true});
+    listener[cell.getAttribute('data')] = () => {
+        eventHandler(cell, turn)
+    };
+    cell.addEventListener('click', listener[cell.getAttribute('data')], {once: true});
 });
 
-resetButton.addEventListener('click', () => {
-    reset();
-});
+resetButton.addEventListener('click', reset);
