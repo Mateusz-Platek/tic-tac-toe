@@ -1,8 +1,11 @@
 let cells = document.querySelectorAll('.cell');
 let background = document.querySelector('.winner');
 let message = document.querySelector('.winner > div');
-let resetButton = document.querySelector('button');
+let btnReset = document.querySelector('.reset');
+let btnRestart = document.querySelector('.restart');
 let player = document.querySelector('.player');
+let oVal = document.querySelector('.o-val');
+let xVal = document.querySelector('.x-val');
 
 let turn = 'X';
 let board = [false, false, false, false, false, false, false, false, false];
@@ -17,11 +20,11 @@ let winner = [
     [2, 4, 6]
 ];
 let listener = [];
-
-player.textContent = turn + ' turn';
+let x = 0;
+let o = 0;
 
 let reset = function() {
-    turn = 'X';
+    changeValue();
     player.textContent = turn + ' turn';
     cells.forEach(cell => {
         cell.removeEventListener('click', listener[cell.getAttribute('data')]);
@@ -30,6 +33,14 @@ let reset = function() {
     });
     background.classList.remove('show');
     board = [false, false, false, false, false, false, false, false, false];
+}
+
+let restart = function() {
+    reset();
+    x = 0;
+    xVal.textContent = x;
+    o = 0;
+    oVal.textContent = o;
 }
 
 let changeValue = function() {
@@ -68,13 +79,23 @@ let placeMark = function(box, val) {
     board[i] = val;
     if(checkWin(turn)) {
         background.classList.add('show');
-        message.textContent = val + ' wins'
+        message.textContent = val + ' wins';
+        if(turn == 'X') {
+            x++;
+            xVal.textContent = x;
+        } else {
+            o++;
+            oVal.textContent = o;
+        }
+        return true;
     }
     changeValue();
 }
 
 let eventHandler = function(cell, turn) {
-    placeMark(cell, turn);
+    if(placeMark(cell, turn)) {
+        return
+    }
     checkDraw();
 }
 
@@ -85,4 +106,6 @@ cells.forEach(cell => {
     cell.addEventListener('click', listener[cell.getAttribute('data')], {once: true});
 });
 
-resetButton.addEventListener('click', reset);
+btnReset.addEventListener('click', reset);
+
+btnRestart.addEventListener('click', restart);
